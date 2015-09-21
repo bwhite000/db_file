@@ -1,0 +1,6 @@
+name: db_file
+version: 0.0.3
+author: Brandon White <jennexproject+dbfile@gmail.com>
+description: A custom Dart-only, small-scale database helper that does not depend on another service, such as needing a SQL database server running.
+environment:
+  sdk: '>=1.12.0 <2.0.0'

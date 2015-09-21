@@ -145,7 +145,7 @@ class DbFile {
       if (intRegExp.hasMatch(_currentRow[listIndexOfColumnName])) {
         columnRowValue = int.parse(_currentRow[listIndexOfColumnName]);
       } else if (doubleRegExp.hasMatch(_currentRow[listIndexOfColumnName])) {
-        columnRowValue = int.parse(_currentRow[listIndexOfColumnName]);
+        columnRowValue = double.parse(_currentRow[listIndexOfColumnName]);
       } else {
         columnRowValue = _currentRow[listIndexOfColumnName];
       }
@@ -163,7 +163,7 @@ class DbFile {
             if (intRegExp.hasMatch(_currentRow[_columnNameLoopIndex])) {
               _returnValueMap[columnName] = int.parse(_currentRow[_columnNameLoopIndex]);
             } else if (doubleRegExp.hasMatch(_currentRow[_columnNameLoopIndex])) {
-              _returnValueMap[columnName] = int.parse(_currentRow[_columnNameLoopIndex]);
+              _returnValueMap[columnName] = double.parse(_currentRow[_columnNameLoopIndex]);
             } else {
               _returnValueMap[columnName] = _currentRow[_columnNameLoopIndex];
             }

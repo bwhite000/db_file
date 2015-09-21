@@ -45,6 +45,7 @@ class DbFile {
   /// Insert a row into the database table
   Future<Null> insertOne(final Map<String, dynamic> dataToInsert) async {
     if (await this.file.exists()) {
+      final IOSink sink = this.file.openWrite(mode: FileMode.WRITE_ONLY_APPEND);
       // Holder for the bare data that will be added to this CSV table row
       final List<dynamic> _listOfDataToInsert = <dynamic>[];
 
@@ -61,8 +62,11 @@ class DbFile {
       // Add this data to the in-memory copy, also
       this.rowValues.add(_listOfDataToInsert);
 
-      // Add this data to the database table file
-      await this.file.writeAsString(_listOfDataToInsert.join(',') + '\n', mode: FileMode.APPEND);
+      // Add this data to the on-disk database table file
+      sink.write(_listOfDataToInsert.join(',') + '\n');
+
+      // Close the file connection and release the resources
+      await sink.close();
     } else {
       throw new FileNotFoundException();
     }

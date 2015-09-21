@@ -118,11 +118,15 @@ class DbFile {
 
         // Assemble a key/value map of the column-name/row-value-for-the-column
         this.columnNames.forEach((final String columnName) {
-          // Set the return value for this column, converting to non-String type, if possible
-          if (intRegExp.hasMatch(_currentRow[_columnNameLoopIndex])) {
-            _returnValueMap[columnName] = int.parse(_currentRow[_columnNameLoopIndex]);
-          } else if (doubleRegExp.hasMatch(_currentRow[_columnNameLoopIndex])) {
-            _returnValueMap[columnName] = int.parse(_currentRow[_columnNameLoopIndex]);
+          if (_currentRow[_columnNameLoopIndex] is String) {
+            // Set the return value for this column, converting to non-String type, if possible
+            if (intRegExp.hasMatch(_currentRow[_columnNameLoopIndex])) {
+              _returnValueMap[columnName] = int.parse(_currentRow[_columnNameLoopIndex]);
+            } else if (doubleRegExp.hasMatch(_currentRow[_columnNameLoopIndex])) {
+              _returnValueMap[columnName] = int.parse(_currentRow[_columnNameLoopIndex]);
+            } else {
+              _returnValueMap[columnName] = _currentRow[_columnNameLoopIndex];
+            }
           } else {
             _returnValueMap[columnName] = _currentRow[_columnNameLoopIndex];
           }

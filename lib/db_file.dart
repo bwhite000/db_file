@@ -72,6 +72,42 @@ class DbFile {
     }
   }
 
+  /// Batch insert multiple rows in the database table
+  Future<Null> insertAll(final List<Map<String, dynamic>> listOfDataToInsert) async {
+    if (await this.file.exists()) {
+      final IOSink sink = this.file.openWrite(mode: FileMode.WRITE_ONLY_APPEND);
+      final List<String> _listOfListsOfData = <String>[];
+
+      listOfDataToInsert.forEach((final Map<String, dynamic> dataToInsert) {
+        // Holder for the bare data that will be added to this CSV table row
+        final List<dynamic> _listOfDataToInsert = <dynamic>[];
+
+        // Create the CSV values, or the default empty String value, for each columnName
+        // from the supplied data to insert.
+        this.columnNames.forEach((final String columnName) {
+          if (dataToInsert.containsKey(columnName)) {
+            _listOfDataToInsert.add(dataToInsert[columnName]);
+          } else {
+            _listOfDataToInsert.add('');
+          }
+        });
+
+        // Add this data to the in-memory copy, also
+        this.rowValues.add(_listOfDataToInsert);
+
+        _listOfListsOfData.add(_listOfDataToInsert.join(','));
+      });
+
+      // Add this data to the on-disk database table file
+      sink.write(_listOfListsOfData.join('\n'));
+
+      // Close the file connection and release the resources
+      await sink.close();
+    } else {
+      throw new FileNotFoundException();
+    }
+  }
+
   Future updateOne() async {
     if (await this.file.exists()) {
     } else {
